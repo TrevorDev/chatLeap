@@ -1,0 +1,107 @@
+
+.navbar-fixed-top {
+    position: static;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+body {
+    min-width: 320px;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+/* Sticky footer styles
+            ------------------------------------------------------------------------------------------------- */
+html, body {
+    height: 100%;
+    /* The html and body elements cannot have any padding or margin. */
+}
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by its height */
+    margin: 0 auto -60px;
+}
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+    height: 60px;
+}
+
+#footer {
+     background-color: #060e0f;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+.chat-window {
+    width:100%;
+    position: absolute;
+    top: 0px;
+    bottom: 60px;
+    overflow:auto;
+}
+
+.chat-bubble {
+    display: inline-block;margin:
+    4px;padding:10px;
+    border-radius:10px;
+    border:2px solid;
+    border-color:#4EB6E3;
+    max-width:75%;
+}
+
+.container-wide {
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.container-wide .credit {
+    padding: 20px 0;
+}
+
+.muted {
+    color: #999999;
+}
+
+.masthead {
+    width:100%;padding-top:20px;
+}
+
+.masthead h1 {
+    font-size: 70px; line-height: 1; letter-spacing: -2px;
+}
+
+.bs-sidenav>li>a {
+padding: 1px 5px;
+}
+
+.btn-primary {
+    border: none;
+}
+
+select {
+    border:1px solid #cccccc;
+    background-color: white;
+    height: 30px;
+    line-height: 30px;
+}
+
+textarea {
+    border:1px solid #cccccc;
+}
+
+input {
+}
+
+.btn-black{
+    border:1px solid #cccccc
+}

@@ -1,0 +1,37 @@
+<% include ../includes/header %>
+        <div id="wrap">
+            <div class="chat-window">
+            <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">&bull; CHAT LEAP &bull;</h1>
+            <% for (var i =0;i<11;i++){ %>
+            <div>
+                <div class="chat-bubble">
+                    hello
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div class="chat-bubble"style="border-color:#4EE3D2;">
+                    hello
+                </div>
+            </div>
+            <% } %>
+            </div>
+            <div id="push">
+            </div>
+        </div>
+        <div id="footer">
+            <form class="form-inline" style="padding-top: 12px;" role="form">
+                <table>
+                <tbody>
+                    <tr>
+                        <td style="width: 100%;">
+                            <input class="form-control" style="width: 100%;" placeholder="Type here to send a message">
+                        </td>
+                        <td>
+                            <button style="width:100px;" type="submit" class="btn btn-default">Send</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+        <% include ../includes/footer %>

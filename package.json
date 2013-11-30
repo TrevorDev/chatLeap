@@ -1,0 +1,23 @@
+{
+	"name": "chatleap",
+	"description": "websiteGen",
+	"version": "0.0.1",
+	"engines": {
+	    "node": "v0.10.x",
+	    "npm":  "1.3.x"
+  	},
+	"private": true,
+	"dependencies": {
+		"nodemailer": "x.x",
+		"express": "x.x",
+		"bcrypt": "x.x",
+		"escape-html": "x.x",
+		"underscore": "x.x",
+		"rekuire": "x.x",
+		"crypto": "x.x",
+		"mysql": "x.x",
+		"ejs": "x.x",
+		"socket.io":"x.x",
+		"node-uuid": "x.x"
+	}
+}

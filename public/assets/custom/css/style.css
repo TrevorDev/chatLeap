@@ -35,7 +35,7 @@ html, body {
 }
 
 #footer {
-     background-color: #060e0f;
+     background-color: #a6aeaf;
 }
 
 /* Custom page CSS
@@ -53,10 +53,13 @@ html, body {
 .chat-bubble {
     display: inline-block;margin:
     4px;padding:10px;
-    border-radius:10px;
+    
     border:2px solid;
     border-color:#4EB6E3;
     max-width:75%;
+    background-color:#FFFFFF;
+    filter:alpha(opacity=80);
+    opacity:0.8;
 }
 
 .container-wide {

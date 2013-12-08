@@ -1,39 +1,47 @@
 <% include ../includes/header %>
-        <div id="wrap">
-            <div class="chat-window">
-            <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">&bull; CHAT LEAP &bull;</h1>
-            <% for (var i =0;i<11;i++){ %>
-            <div>
-                <div class="chat-bubble">
-                    hello
-                </div>
-            </div>
-            <div style="text-align: right;">
-                <div class="chat-bubble"style="border-color:#4EE3D2;">
-                    hello
-                </div>
-            </div>
-            <% } %>
-            </div>
-            <div id="push">
+    <noscript>
+        <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
+        <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">Please enable javascript to start chatting.</h1>
+    </noscript>
+    <div id="wrap" class="noscript-hide">
+        <div class="chat-window">
+        <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
+        <div style="text-align:center">
+            <button class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
+            <button class="btn btn-default" style="margin: 0 auto;">Join Random Chat</button>
+        </div>
+        <% for (var i =0;i<11;i++){ %>
+        <div>
+            <div class="chat-bubble">
+                hello
             </div>
         </div>
-        <div id="footer">
-            <form id="chat-input" class="form-inline" style="padding-top: 12px;" role="form">
-                <table>
-                <tbody>
-                    <tr>
-                        <td style="width: 100%;">
-                            <input name="message" class="form-control" style="width: 100%;" placeholder="Type here to send a message">
-                        </td>
-                        <td>
-                            <button style="width:100px;" type="submit" class="btn btn-default">Send</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            </form>
+        <div style="text-align: right;">
+            <div class="chat-bubble"style="border-color:#4EE3D2;">
+                hello
+            </div>
         </div>
+        <% } %>
+        </div>
+        <div id="push">
+        </div>
+    </div>
+    <div id="footer" class="noscript-hide">
+        <form id="chat-input" class="form-inline" style="padding-top: 12px;" role="form">
+            <table>
+            <tbody>
+                <tr>
+                    <td style="width: 100%;">
+                        <input name="message" class="form-control" style="width: 100%;" placeholder="Type here to send a message">
+                    </td>
+                    <td>
+                        <button style="width:100px;" type="submit" class="btn btn-default">Send</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
 <% include ../includes/footer %>
 <script>
 $("#chat-input").submit(function(){

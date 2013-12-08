@@ -2,6 +2,8 @@
 var express = require('express');
 var ejs = require('ejs');
 var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
 
 /*CUSTOM modules*/
 var rek = require('rekuire');
@@ -30,6 +32,14 @@ app.get('/public/*', function(req, res, next){
 
 routes.init(app);
 
-app.listen(80);
+server.listen(80);
+
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
 
 console.log("Started----------------------");

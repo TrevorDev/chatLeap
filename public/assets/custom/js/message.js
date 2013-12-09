@@ -1,4 +1,4 @@
-var socket = io.connect('/');
+var socket = io.connect(SOCKET_IO_ADDRESS);
 socket.currentRoom = "";
 
 //start in global room
@@ -20,7 +20,7 @@ function MessageCtrl($scope) {
             if($scope.messageText!=""){
                 socket.emit('message', { room: socket.currentRoom, text: $scope.messageText});
                 $scope.messages.push({text:$scope.messageText, userName:"You", otherUser:false});
-                //$scope.messageText = '';
+                $scope.messageText = '';
             }
         }
         //IS THERE A BETTER WAY TO GET THIS TO HAPPEN AFTER ANGULAR UPDATES?????

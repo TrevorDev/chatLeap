@@ -32,14 +32,13 @@ app.get('/public/*', function(req, res, next){
 
 routes.init(app);
 
-server.listen(80);
+server.listen(3001);
 
 
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
 
   socket.on('message', function (data) {
-    console.log(data);
     socket.broadcast.to(data.room).emit('message', data);
   });
 

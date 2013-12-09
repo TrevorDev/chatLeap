@@ -5,7 +5,7 @@
     </noscript>
     <div class="message-app-wrapper noscript-hide" ng-controller="MessageCtrl">
         <div class="chat-window-wrapper">
-            <div class="chat-window">
+            <div class="chat-window" id="chat-window">
             <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
             <div style="text-align:center">
                 <button ng-click="joinGlobal()"  class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div id="footer" class="noscript-hide">
-            <form class="form-inline" style="padding-top: 12px;" role="form" ng-submit="addMessage()">
+            <form class="form-inline" style="padding-top: 12px;" role="form" ng-submit="addMessage()" scroll-bottom="chat-window">
                 <table>
                 <tbody>
                     <tr>

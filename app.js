@@ -8,8 +8,8 @@ var io = require('socket.io').listen(server, { log: false });
 /*CUSTOM modules*/
 var rek = require('rekuire');
 var routes = rek('routes.js');
-var db = rek('database.js');
-db.connect();
+//var db = rek('database.js');
+//db.connect();
 
 /*setup ejs with views folder*/
 app.set('views', __dirname + '/views');

@@ -2,9 +2,7 @@ var socket = io.connect('http://localhost');
 socket.currentRoom = "";
 
 function MessageCtrl($scope) {
-    $scope.messages = [
-        {text:'learn angular', userName:"jack", otherUser:true},
-        {text:'build an angular app', userName:"bob", otherUser:true}];
+    $scope.messages = [];
 
     $scope.joinGlobal = function(){
         socket.currentRoom = "global";

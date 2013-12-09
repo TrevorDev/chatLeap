@@ -1,28 +1,38 @@
-var uploadLocation = '/uploads';
+var socket = io.connect('http://localhost');
+socket.currentRoom = "";
 
-function updateMessageList(){
-    var participantID = 1; // TODO: get this from somewhere
-    $.ajax({
-    type: "GET",
-    /*url: 'http://131.104.48.208/message/' + participantID,*/
-    url: '/message/' + participantID,
-    success: function(data) {
-      if (data != 'failed'){
-        for (var i = 0; i < data.length; i++){
-          var template = '<div class="message right"><div class="well bubble">';
-          template = template + '<h3>New recording</h3>';
-          template = template + '<p><a href="' + data[i].path + '"><img src="/public/assets/custom/img/mp3.png" /></a></p></div></div>';
-          $('#autoMessageArea').append(template);
+function MessageCtrl($scope) {
+    $scope.messages = [
+        {text:'learn angular', userName:"jack", otherUser:true},
+        {text:'build an angular app', userName:"bob", otherUser:true}];
+
+    $scope.joinGlobal = function(){
+        socket.currentRoom = "global";
+        socket.emit('joinRoom', { room: socket.currentRoom });
+    };
+
+    $scope.addMessage = function(message) {
+        if(message){
+            $scope.messages.push({text:message.text, userName:"Other", otherUser:true});
+        }else{
+            if($scope.messageText!=""){
+            socket.emit('message', { room: socket.currentRoom, text: $scope.messageText});
+            $scope.messages.push({text:$scope.messageText, userName:"You", otherUser:false});
+            $scope.messageText = '';
+            }
         }
-      } else {
-        console.log("ERROR: " + data);
-      }
-    },
-        error: onError
-    });
-    return false;
-}
+    };
 
-function onError(){
-  console.log("ERROR");
+    socket.on('message', function (data) {
+        $scope.addMessage(data);
+        $scope.$apply();
+    });
+
+    socket.on('news', function (data) {
+        console.log(data);
+    });
+
+    socket.on('userJoinedRoom', function (data) {
+        console.log(data);
+    });
 }

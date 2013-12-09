@@ -3,64 +3,47 @@
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">Please enable javascript to start chatting.</h1>
     </noscript>
-    <div id="wrap" class="noscript-hide">
-        <div class="chat-window">
-        <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
-        <div style="text-align:center">
-            <button class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
-            <button class="btn btn-default" style="margin: 0 auto;">Join Random Chat</button>
-        </div>
-        <% for (var i =0;i<11;i++){ %>
-        <div>
-            <div class="chat-bubble">
-                hello
+    <div class="message-app-wrapper noscript-hide" ng-controller="MessageCtrl">
+        <div class="chat-window-wrapper">
+            <div class="chat-window">
+            <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
+            <div style="text-align:center">
+                <button ng-click="joinGlobal()"  class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
+                <button class="btn btn-default" style="margin: 0 auto;">Join Random Chat</button>
+            </div>
+              <div ng-repeat="message in messages" ng-model="allMessages">
+                <div ng-switch on="message.otherUser">
+                    <div ng-switch-when="true">
+                        <div class="chat-bubble">
+                          <span>{{message.userName}}: {{message.text}}</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;" ng-switch-default>
+                        <div class="chat-bubble" style="border-color:#4EE3D2;">
+                          <span>{{message.userName}}: {{message.text}}</span>
+                        </div>
+                    </div>
+                </div>                
+              </div>
+            </div>
+            <div id="push">
             </div>
         </div>
-        <div style="text-align: right;">
-            <div class="chat-bubble"style="border-color:#4EE3D2;">
-                hello
-            </div>
+        <div id="footer" class="noscript-hide">
+            <form class="form-inline" style="padding-top: 12px;" role="form" ng-submit="addMessage()">
+                <table>
+                <tbody>
+                    <tr>
+                        <td style="width: 100%;">
+                            <input name="messageText" ng-model="messageText" class="form-control" style="width: 100%;" placeholder="Type here to send a message">
+                        </td>
+                        <td>
+                            <button style="width:100px;" type="submit" class="btn btn-default">Send</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </form>
         </div>
-        <% } %>
-        </div>
-        <div id="push">
-        </div>
-    </div>
-    <div id="footer" class="noscript-hide">
-        <form id="chat-input" class="form-inline" style="padding-top: 12px;" role="form">
-            <table>
-            <tbody>
-                <tr>
-                    <td style="width: 100%;">
-                        <input name="message" class="form-control" style="width: 100%;" placeholder="Type here to send a message">
-                    </td>
-                    <td>
-                        <button style="width:100px;" type="submit" class="btn btn-default">Send</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        </form>
     </div>
 <% include ../includes/footer %>
-<script>
-$("#chat-input").submit(function(){
-    var values = {};
-    $.each($('#chat-input').serializeArray(), function(i, field) {
-        values[field.name] = field.value;
-    });
-    console.log(values["message"]);
-                return false;
-}); 
-
-</script>
-
-
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io.connect('http://localhost');
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-</script>

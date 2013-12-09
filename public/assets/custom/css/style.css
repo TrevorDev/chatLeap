@@ -1,4 +1,4 @@
-
+/* FIX MOBILE SETTINGS */
 .navbar-fixed-top {
     position: static;
     margin-bottom: 0px;
@@ -14,21 +14,10 @@ body {
     margin-left: 0px;
 }
 
-/* Sticky footer styles
-            ------------------------------------------------------------------------------------------------- */
-html, body {
+/* FULLSCREEN CHAT */
+html, body, .message-app-wrapper{
     height: 100%;
-    /* The html and body elements cannot have any padding or margin. */
 }
-/* Wrapper for page content to push down footer */
-#wrap {
-    min-height: 100%;
-    height: auto !important;
-    height: 100%;
-    /* Negative indent footer by its height */
-    margin: 0 auto -60px;
-}
-/* Set the fixed height of the footer here */
 #push,
 #footer {
     height: 60px;
@@ -38,9 +27,13 @@ html, body {
      background-color: #a6aeaf;
 }
 
-/* Custom page CSS
--------------------------------------------------- */
-/* Not required for template or sticky footer method. */
+.chat-window-wrapper{
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by its height */
+    margin: 0 auto -60px;
+}
 
 .chat-window {
     width:100%;
@@ -49,6 +42,8 @@ html, body {
     bottom: 60px;
     overflow:auto;
 }
+
+/* Custom page CSS */
 
 .chat-bubble {
     display: inline-block;margin:
@@ -71,25 +66,7 @@ html, body {
     padding: 20px 0;
 }
 
-.muted {
-    color: #999999;
-}
 
-.masthead {
-    width:100%;padding-top:20px;
-}
-
-.masthead h1 {
-    font-size: 70px; line-height: 1; letter-spacing: -2px;
-}
-
-.bs-sidenav>li>a {
-padding: 1px 5px;
-}
-
-.btn-primary {
-    border: none;
-}
 
 select {
     border:1px solid #cccccc;
@@ -100,11 +77,4 @@ select {
 
 textarea {
     border:1px solid #cccccc;
-}
-
-input {
-}
-
-.btn-black{
-    border:1px solid #cccccc
 }

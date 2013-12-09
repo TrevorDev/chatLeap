@@ -3,7 +3,7 @@ var express = require('express');
 var ejs = require('ejs');
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server, { log: false });
 
 /*CUSTOM modules*/
 var rek = require('rekuire');
@@ -37,8 +37,15 @@ server.listen(80);
 
 io.sockets.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
+
+  socket.on('message', function (data) {
     console.log(data);
+    socket.broadcast.to(data.room).emit('message', data);
+  });
+
+  socket.on('joinRoom', function (data) {
+  	socket.join(data.room);
+  	socket.broadcast.to(data.room).emit('userJoinedRoom', { room: data.room, userName: "TODO" });
   });
 });
 

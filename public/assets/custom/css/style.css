@@ -24,7 +24,8 @@ html, body, .message-app-wrapper{
 }
 
 #footer {
-     background-color: #a6aeaf;
+     background-color: #e6e6e6;
+     border-top: solid 1px #a6a6a6;
 }
 
 .chat-window-wrapper{
@@ -32,10 +33,11 @@ html, body, .message-app-wrapper{
     height: auto !important;
     height: 100%;
     /* Negative indent footer by its height */
-    margin: -51px auto -60px;
+    margin: 0px auto -60px;
 }
 
 .chat-window {
+    z-index: -1;
     width:100%;
     position: absolute;
     top: 51px;

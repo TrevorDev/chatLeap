@@ -4,7 +4,7 @@
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">Please enable javascript to start chatting.</h1>
     </noscript>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" style="height:50px;">
+    <!--<div class="navbar navbar-default navbar-fixed-top" style="background-color:#EEEEEE;height:50px;border-bottom:1px solid #aaa;">
     <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
               <span class="icon-bar"></span>
@@ -13,8 +13,8 @@
             </button>
             <a class="navbar-brand" href="/"><img class="picDisplay" src="/public/assets/custom/img/logo.png" width="20px">&nbsp;&nbsp;Chat Leap</a>
     </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+            <div class="navbar-collapse collapse" style="position:relative;left:20">
+                <ul class="nav navbar-nav" style="background-color:#EEEEEE;">
                     <li class="active">
                         <a href="/">Home <i class="icon-home"></i></a>
                     </li>
@@ -27,7 +27,7 @@
                     
                 </ul>
                  
-                 <form class="navbar-form navbar-right" method="post" action="/login">
+                 <form class="navbar-form navbar-right" method="post" action="/login" style="position:relative;background-color:#EEEEEE;">
                       <div class="form-group">
                         <input class="form-control" placeholder="Email" id="inputIcon" name="email" type="text">
                       </div>
@@ -39,7 +39,44 @@
                 </form>
                  
             </div>
-</div>
+</div>-->
+
+<div class="navbar navbar-default navbar-static-top" role="navigation" style="position: fixed;top: 0px;left: 0px;width: 100%;">
+      
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Chat Leap</a>
+        </div>
+        <div class="navbar-collapse collapse" style="height: 1px;">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/">Default</a></li>
+            <li class="active"><a href="./">Static top</a></li>
+            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+    </div>
 
     <div class="message-app-wrapper noscript-hide" ng-controller="MessageCtrl">
         <div class="chat-window-wrapper">
@@ -73,7 +110,7 @@
                 <tbody>
                     <tr>
                         <td style="width: 100%;">
-                            <input name="messageText" ng-model="messageText" class="form-control" style="width: 100%;" placeholder="Type here to send a message">
+                            <input autofocus name="messageText" ng-model="messageText" class="form-control" style="width: 100%;" placeholder="Type here to send a message">
                         </td>
                         <td>
                             <button style="width:100px;" type="submit" class="btn btn-default">Send</button>

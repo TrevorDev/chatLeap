@@ -3,6 +3,44 @@
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">Please enable javascript to start chatting.</h1>
     </noscript>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" style="height:50px;">
+    <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img class="picDisplay" src="/public/assets/custom/img/logo.png" width="20px">&nbsp;&nbsp;Chat Leap</a>
+    </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="/">Home <i class="icon-home"></i></a>
+                    </li>
+                    <li>
+                        <a href="/plans">Plans <i class="icon-shopping-cart"></i></a>
+                    </li>
+                    <li>
+                        <a href="/contact">Contact/Support <i class="icon-phone"></i></a>
+                    </li>
+                    
+                </ul>
+                 
+                 <form class="navbar-form navbar-right" method="post" action="/login">
+                      <div class="form-group">
+                        <input class="form-control" placeholder="Email" id="inputIcon" name="email" type="text">
+                      </div>
+                      
+                      <div class="form-group">
+                        <input class="form-control" placeholder="Password" id="inputIcon" name="password" type="password">
+                      </div>
+                  <button type="submit" class="btn">Log In</button>
+                </form>
+                 
+            </div>
+</div>
+
     <div class="message-app-wrapper noscript-hide" ng-controller="MessageCtrl">
         <div class="chat-window-wrapper">
             <div class="chat-window" id="chat-window">

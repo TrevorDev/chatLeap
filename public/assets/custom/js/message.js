@@ -7,7 +7,7 @@ socket.emit('joinRoom', { room: socket.currentRoom });
 
 function MessageCtrl($scope) {
     $scope.messages = [];
-
+    $scope.userOnlineCount = 1;
     $scope.joinGlobal = function(){
         socket.currentRoom = "global";
         socket.emit('joinRoom', { room: socket.currentRoom });
@@ -33,6 +33,12 @@ function MessageCtrl($scope) {
         $scope.addMessage(data);
         $scope.$apply();
     });
+
+    socket.on('updateUsersOnline', function (data) {
+        $scope.userOnlineCount = (data.userOnlineCount);
+        $scope.$apply();
+    });
+
 
     socket.on('news', function (data) {
         console.log(data);

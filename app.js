@@ -1,3 +1,6 @@
+/* Stat vars */
+var userOnlineCount = 0;
+
 /*NODE JS modules*/
 var express = require('express');
 var ejs = require('ejs');
@@ -34,10 +37,11 @@ routes.init(app);
 
 server.listen(3001);
 
-
 io.sockets.on('connection', function (socket) {
+  userOnlineCount++;
   socket.userName='Guest'+Math.floor(Math.random()*100000);
-  socket.emit('news', { hello: 'world' });
+  socket.emit('news', { hello: "world" });
+  io.sockets.emit('updateUsersOnline', { userOnlineCount: userOnlineCount });
 
   socket.on('message', function (data) {
   	data.userName=socket.userName;
@@ -47,6 +51,11 @@ io.sockets.on('connection', function (socket) {
   socket.on('joinRoom', function (data) {
   	socket.join(data.room);
   	socket.broadcast.to(data.room).emit('userJoinedRoom', { room: data.room, userName: socket.userName });
+  });
+
+  socket.on('disconnect', function () {
+    userOnlineCount--;
+    io.sockets.emit('updateUsersOnline', { userOnlineCount: userOnlineCount });
   });
 });
 

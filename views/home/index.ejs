@@ -3,7 +3,7 @@
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">Please enable javascript to start chatting.</h1>
     </noscript>
-
+<div class="message-app-wrapper noscript-hide" ng-controller="MessageCtrl">
 <div class="navbar navbar-default navbar-static-top" role="navigation" style="position: fixed;top: 0px;left: 0px;width: 100%;">
       
         <div class="navbar-header">
@@ -41,14 +41,14 @@
         </div><!--/.nav-collapse -->
     </div>
 
-    <div class="message-app-wrapper noscript-hide" ng-controller="MessageCtrl">
+    
         <div class="chat-window-wrapper">
             <div class="chat-window" id="chat-window">
-            <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
-            <div style="text-align:center">
+            <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">&bull; CHAT LEAP &bull;</h1>
+            <!--<div style="text-align:center">
                 <button ng-click="joinGlobal()"  class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
                 <button class="btn btn-default" style="margin: 0 auto;">Join Random Chat</button>
-            </div>
+            </div>-->
               <div ng-repeat="message in messages" ng-model="allMessages">
                 <div ng-switch on="message.otherUser">
                     <div ng-switch-when="true">

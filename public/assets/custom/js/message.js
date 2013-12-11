@@ -15,7 +15,7 @@ function MessageCtrl($scope) {
 
     $scope.addMessage = function(message) {
         if(message){
-            $scope.messages.push({text:message.text, userName:"Other", otherUser:true});
+            $scope.messages.push({text:message.text, userName:message.userName, otherUser:true});
         }else{
             if($scope.messageText!=""){
                 socket.emit('message', { room: socket.currentRoom, text: $scope.messageText});

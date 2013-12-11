@@ -36,15 +36,17 @@ server.listen(3001);
 
 
 io.sockets.on('connection', function (socket) {
+  socket.userName='Guest'+Math.floor(Math.random()*100000);
   socket.emit('news', { hello: 'world' });
 
   socket.on('message', function (data) {
+  	data.userName=socket.userName;
     socket.broadcast.to(data.room).emit('message', data);
   });
 
   socket.on('joinRoom', function (data) {
   	socket.join(data.room);
-  	socket.broadcast.to(data.room).emit('userJoinedRoom', { room: data.room, userName: "TODO" });
+  	socket.broadcast.to(data.room).emit('userJoinedRoom', { room: data.room, userName: socket.userName });
   });
 });
 

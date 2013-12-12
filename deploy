@@ -1,1 +1,1 @@
-sshpass -plceqmdcdcyrv ssh root@192.241.174.150 './deployChatLeap.sh'
+sshpass -plceqmdcdcyrv ssh -l root root@192.241.174.150 './deployChatLeap.sh'

@@ -40,7 +40,7 @@ server.listen(3001);
 io.sockets.on('connection', function (socket) {
   userOnlineCount++;
   socket.userName='Guest'+Math.floor(Math.random()*100000);
-  socket.emit('news', { hello: "worlds" });
+  socket.emit('news', { hello: "worldss" });
   io.sockets.emit('updateUsersOnline', { userOnlineCount: userOnlineCount });
 
   socket.on('message', function (data) {

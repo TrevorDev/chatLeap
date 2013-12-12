@@ -36,12 +36,24 @@ html, body, .message-app-wrapper{
     margin: 0px auto -60px;
 }
 
-.chat-window {
-    width:100%;
+.people-window, .chat-window {
     position: absolute;
     top: 51px;
     bottom: 60px;
     overflow:auto;
+}
+
+.chat-window {
+    background-color: #FFF;
+    right:140px;
+    left:0px;
+}
+
+.people-window {
+    width: 140px;
+    background-color: #FFF;
+    border-left: 1px solid #a6a6a6;
+    right:0px;
 }
 
 /* Custom page CSS */

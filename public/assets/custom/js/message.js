@@ -6,6 +6,7 @@ socket.currentRoom = "global";
 socket.emit('joinRoom', { room: socket.currentRoom });
 
 function MessageCtrl($scope) {
+    $scope.guestAlias = "test";
     $scope.messages = [];
     $scope.userOnlineCount = 1;
     $scope.joinGlobal = function(){
@@ -29,6 +30,16 @@ function MessageCtrl($scope) {
         }, 0);
     };
 
+
+//JQUERY
+$('#guestAlias').typing({
+    stop: function (event, $elem) {
+        console.log("sent");
+    },
+    delay: 400
+});
+
+//SOCKET HANDLER
     socket.on('message', function (data) {
         $scope.addMessage(data);
         $scope.$apply();

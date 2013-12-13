@@ -1,26 +1,38 @@
+function pick(arg, def) {
+   return (typeof arg == 'undefined' ? def : arg);
+}
+
 var socket = io.connect(SOCKET_IO_ADDRESS);
-socket.currentRoom = "";
+
+//OBJECT
+function Room(name,messages,users) {
+        this.name=pick(name,"");
+        this.messages = pick(messages,[]);
+        this.users = pick(users,{});
+    }
 
 //start in global room
-socket.currentRoom = "global";
-socket.emit('joinRoom', { room: socket.currentRoom });
 
+
+
+//socket.currentRoom = new Room("global");
+//socket.rooms[socket.currentRoom.name] = (socket.currentRoom);
+
+//CONTROLLER
 function MessageCtrl($scope) {
-    $scope.guestAlias = "tests";
-    $scope.messages = [];
+
     $scope.userOnlineCount = 1;
-    $scope.joinGlobal = function(){
-        socket.currentRoom = "global";
-        socket.emit('joinRoom', { room: socket.currentRoom });
-    };
+
+    $scope.rooms = {};
+    $scope.currentRoom = {};
 
     $scope.addMessage = function(message) {
         if(message){
-            $scope.messages.push({text:message.text, userName:message.userName, otherUser:true});
+            $scope.currentRoom.messages.push({text:message.text, userName:message.userName, otherUser:true});
         }else{
             if($scope.messageText!=""){
                 socket.emit('message', { room: socket.currentRoom, text: $scope.messageText});
-                $scope.messages.push({text:$scope.messageText, userName:"You", otherUser:false});
+                $scope.currentRoom.messages.push({text:$scope.messageText, userName:"You", otherUser:false});
                 $scope.messageText = '';
             }
         }
@@ -31,22 +43,33 @@ function MessageCtrl($scope) {
     };
 
 
-//JQUERY
-$('#guestAlias').typing({
-    stop: function (event, $elem) {
-        console.log("sent");
-    },
-    delay: 400
-});
+    //JQUERY
+    $('#guestAlias').typing({
+        stop: function (event, $elem) {
+            console.log("sent");
+        },
+        delay: 400
+    });
 
-//SOCKET HANDLER
+    //SOCKET HANDLER
     socket.on('message', function (data) {
         $scope.addMessage(data);
         $scope.$apply();
     });
 
+    socket.on('assignedUserName', function (data) {
+        $scope.guestAlias = data.userName;
+        $scope.$apply();
+    });
+
     socket.on('updateUsersOnline', function (data) {
         $scope.userOnlineCount = (data.userOnlineCount);
+        $scope.$apply();
+    });
+
+    socket.on('connectedToRoom', function (data) {
+        $scope.currentRoom = new Room(data.name,data.messages,data.users);
+        $scope.rooms[$scope.currentRoom.name] = $scope.currentRoom;
         $scope.$apply();
     });
 
@@ -56,6 +79,15 @@ $('#guestAlias').typing({
     });
 
     socket.on('userJoinedRoom', function (data) {
-        console.log(data);
+        $scope.currentRoom.users[data.id]=data.userName;
+        $scope.$apply();
     });
+
+    socket.on('userLeftRoom', function (data) {
+        delete $scope.rooms[data.roomName].users[data.userID];
+        $scope.$apply();
+    });
+
+    //CTRL MAIN
+    socket.emit('joinRoom', { room: "global" });
 }

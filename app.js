@@ -1,6 +1,3 @@
-/* Stat vars */
-var userOnlineCount = 0;
-
 /*NODE JS modules*/
 var express = require('express');
 var ejs = require('ejs');
@@ -11,6 +8,7 @@ var io = require('socket.io').listen(server, { log: false });
 /*CUSTOM modules*/
 var rek = require('rekuire');
 var routes = rek('routes.js');
+var socketHelper = rek('socketHelper.js');
 //var db = rek('database.js');
 //db.connect();
 
@@ -38,10 +36,10 @@ routes.init(app);
 server.listen(3001);
 
 io.sockets.on('connection', function (socket) {
-  userOnlineCount++;
-  socket.userName='Guest'+Math.floor(Math.random()*100000);
+  socketHelper.init(socket);
+  socket.emit('assignedUserName', { userName: socket.userName });
   socket.emit('news', { hello: "worldsss" });
-  io.sockets.emit('updateUsersOnline', { userOnlineCount: userOnlineCount });
+  io.sockets.emit('updateUsersOnline', { userOnlineCount: socketHelper.getUserOnlineCount() });
 
   socket.on('message', function (data) {
   	data.userName=socket.userName;
@@ -50,12 +48,27 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('joinRoom', function (data) {
   	socket.join(data.room);
-  	socket.broadcast.to(data.room).emit('userJoinedRoom', { room: data.room, userName: socket.userName });
+  	socket.broadcast.to(data.room).emit('userJoinedRoom', { room: data.room, userName: socket.userName, id: socket.id });
+
+    var socketsInRoom = io.sockets.clients(data.room);
+    var usersInRoom = {};
+    for (var i =0;i<socketsInRoom.length;i++){
+      usersInRoom[socketsInRoom[i].id]=socketsInRoom[i].userName;
+    }
+
+    socket.emit('connectedToRoom', { name: data.room,users:usersInRoom });
   });
 
   socket.on('disconnect', function () {
-    userOnlineCount--;
-    io.sockets.emit('updateUsersOnline', { userOnlineCount: userOnlineCount });
+    var rooms = io.sockets.manager.roomClients[socket.id];
+    for(var key in rooms){
+      if(key!=""){
+        var roomName = key.substring(1);
+        socket.broadcast.to(roomName).emit('userLeftRoom', { userID: socket.id, roomName:roomName });
+      }
+    }
+    socketHelper.destroy(socket);
+    io.sockets.emit('updateUsersOnline', { userOnlineCount: socketHelper.getUserOnlineCount() });
   });
 });
 

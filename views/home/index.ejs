@@ -51,7 +51,7 @@
                 <button ng-click="joinGlobal()"  class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
                 <button class="btn btn-default" style="margin: 0 auto;">Join Random Chat</button>
             </div>-->
-              <div ng-repeat="message in messages" ng-model="allMessages">
+              <div ng-repeat="message in currentRoom.messages" ng-model="allMessages">
                 <div ng-switch on="message.otherUser">
                     <div ng-switch-when="true">
                         <div class="chat-bubble">
@@ -69,9 +69,9 @@
             <div class="people-window">
               <ul class="list-group">
                 <li class="list-group-item" style="font-size:2em;">Users</li>
-                <li class="list-group-item">User 1</li>
-                <li class="list-group-item">User 2</li>
-                <li class="list-group-item">User 3</li>
+                <div ng-repeat="(key, value) in currentRoom.users" ng-model="allUsers">
+                <li class="list-group-item">{{value}}</li>
+                </div> 
               </ul>
             </div> 
             <div id="push">

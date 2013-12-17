@@ -21,8 +21,10 @@ function Room(name,messages,users) {
 //CONTROLLER
 function MessageCtrl($scope) {
 
-    $scope.userOnlineCount = 1;
+    $scope.session = {};
+    $scope.session.userName = "";
 
+    $scope.userOnlineCount = 1;
     $scope.rooms = {};
     $scope.currentRoom = {};
 
@@ -32,7 +34,7 @@ function MessageCtrl($scope) {
         }else{
             if($scope.messageText!=""){
                 socket.emit('message', { room: socket.currentRoom, text: $scope.messageText});
-                $scope.currentRoom.messages.push({text:$scope.messageText, userName:"You", otherUser:false});
+                $scope.currentRoom.messages.push({text:$scope.messageText, userName:$scope.session.userName, otherUser:false});
                 $scope.messageText = '';
             }
         }
@@ -46,7 +48,8 @@ function MessageCtrl($scope) {
     //JQUERY
     $('#guestAlias').typing({
         stop: function (event, $elem) {
-            console.log("sent");
+            $scope.session.userName = $elem.val();
+            socket.emit('changeName', { userName: $scope.session.userName });
         },
         delay: 400
     });
@@ -58,7 +61,9 @@ function MessageCtrl($scope) {
     });
 
     socket.on('assignedUserName', function (data) {
-        $scope.guestAlias = data.userName;
+        $scope.session.userName = data.userName;
+        //maybe dont need guestAlias???
+        $scope.guestAlias = $scope.session.userName;
         $scope.$apply();
     });
 
@@ -73,13 +78,17 @@ function MessageCtrl($scope) {
         $scope.$apply();
     });
 
+    socket.on('changeName', function (data) {
+        $scope.rooms[data.roomName].users[data.userID] = data.userName;
+        $scope.$apply();
+    });
 
     socket.on('news', function (data) {
         console.log(data);
     });
 
     socket.on('userJoinedRoom', function (data) {
-        $scope.currentRoom.users[data.id]=data.userName;
+        $scope.rooms[data.roomName].users[data.id]=data.userName;
         $scope.$apply();
     });
 

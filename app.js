@@ -36,11 +36,13 @@ routes.init(app);
 server.listen(3001);
 
 io.sockets.on('connection', function (socket) {
+  //INITIALIZE CONNECTION
   socketHelper.init(socket);
   socket.emit('assignedUserName', { userName: socket.userName });
   socket.emit('news', { hello: "worldsss" });
   io.sockets.emit('updateUsersOnline', { userOnlineCount: socketHelper.getUserOnlineCount() });
 
+  //ROUTES
   socket.on('message', function (data) {
   	data.userName=socket.userName;
     socket.broadcast.to(data.room).emit('message', data);
@@ -48,7 +50,7 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('joinRoom', function (data) {
   	socket.join(data.room);
-  	socket.broadcast.to(data.room).emit('userJoinedRoom', { room: data.room, userName: socket.userName, id: socket.id });
+  	socket.broadcast.to(data.room).emit('userJoinedRoom', { roomName: data.room, userName: socket.userName, id: socket.id });
 
     var socketsInRoom = io.sockets.clients(data.room);
     var usersInRoom = {};
@@ -57,6 +59,17 @@ io.sockets.on('connection', function (socket) {
     }
 
     socket.emit('connectedToRoom', { name: data.room,users:usersInRoom });
+  });
+
+  socket.on('changeName', function (data) {
+    socket.userName = data.userName;
+    var rooms = io.sockets.manager.roomClients[socket.id];
+    for(var key in rooms){
+      if(key!=""){
+        var roomName = key.substring(1);
+        io.sockets.in(roomName).emit('changeName', { roomName: roomName, userID: socket.id, userName:socket.userName });
+      }
+    }
   });
 
   socket.on('disconnect', function () {

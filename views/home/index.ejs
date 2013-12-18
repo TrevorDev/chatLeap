@@ -26,9 +26,9 @@
                 <li><a href="#">Random 1 on 1 chat</a></li>
               </ul>
             </li>
-            <li class="active"><a href="#">Chat Tab 1</a></li>
-            <li><a href="#about">Chat Tab 2</a></li>
-            <li><a href="#contact">Chat Tab 3</a></li>
+            <li  ng-class="(room.name==currentRoom.name) ? 'active' : ''" ng-repeat="room in rooms" ng-model="allRooms">
+              <a ng-click="changeRoom(room.name)" href="#">{{room.name}}</a>
+            </li>
           </ul>
           <form class="navbar-form navbar-right" method="post" action="/login">
                       <div class="form-group">

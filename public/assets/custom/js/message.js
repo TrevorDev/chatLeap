@@ -28,12 +28,16 @@ function MessageCtrl($scope) {
     $scope.rooms = {};
     $scope.currentRoom = {};
 
+    $scope.changeRoom = function(roomName) {
+        $scope.currentRoom = $scope.rooms[roomName];
+    }
+
     $scope.addMessage = function(message) {
         if(message){
-            $scope.currentRoom.messages.push({text:message.text, userName:message.userName, otherUser:true});
+            $scope.rooms[message.room].messages.push({text:message.text, userName:message.userName, otherUser:true});
         }else{
             if($scope.messageText!=""){
-                socket.emit('message', { room: socket.currentRoom, text: $scope.messageText});
+                socket.emit('message', { room: $scope.currentRoom.name, text: $scope.messageText});
                 $scope.currentRoom.messages.push({text:$scope.messageText, userName:$scope.session.userName, otherUser:false});
                 $scope.messageText = '';
             }
@@ -99,4 +103,5 @@ function MessageCtrl($scope) {
 
     //CTRL MAIN
     socket.emit('joinRoom', { room: "global" });
+    socket.emit('joinRoom', { room: "global2" });
 }

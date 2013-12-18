@@ -34,6 +34,7 @@ function MessageCtrl($scope) {
 
     $scope.addMessage = function(message) {
         if(message){
+            n = new Notification( "New Messages");
             $scope.rooms[message.room].messages.push({text:message.text, userName:message.userName, otherUser:true});
         }else{
             if($scope.messageText!=""){

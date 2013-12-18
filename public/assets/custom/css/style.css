@@ -68,6 +68,7 @@ html, body, .message-app-wrapper{
     background-color:#FFFFFF;
     filter:alpha(opacity=80);
     opacity:0.8;
+    word-wrap: break-word; 
 }
 
 .container-wide {

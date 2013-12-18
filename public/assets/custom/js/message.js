@@ -102,6 +102,6 @@ function MessageCtrl($scope) {
     });
 
     //CTRL MAIN
-    socket.emit('joinRoom', { room: "global" });
-    socket.emit('joinRoom', { room: "global2" });
+    socket.emit('joinRoom', { room: "ChatRoom 2" });
+    socket.emit('joinRoom', { room: "ChatRoom 1" });
 }

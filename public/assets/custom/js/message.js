@@ -30,8 +30,9 @@ function linkify(inputText) {
         for(var i = 0;i<matches.length;i++){
             var start = inputText.indexOf(matches[i]);
             var end = start+matches[i].length;
+            linkText = matches[i].replace("http://","").replace("https://","");
             messagePeices.push(new MessagePeice("text",inputText.substring(last,start)));
-            messagePeices.push(new MessagePeice("link",inputText.substring(start,end)));
+            messagePeices.push(new MessagePeice("link",linkText));
             last=end;
         }
         messagePeices.push(new MessagePeice("text",inputText.substring(last)));
@@ -57,6 +58,7 @@ function MessageCtrl($scope) {
 
     $scope.changeRoom = function(roomName) {
         $scope.currentRoom = $scope.rooms[roomName];
+        $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
     }
 
     $scope.addMessage = function(message) {

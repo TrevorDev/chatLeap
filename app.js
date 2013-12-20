@@ -39,7 +39,7 @@ io.sockets.on('connection', function (socket) {
   //INITIALIZE CONNECTION
   socketHelper.init(socket);
   socket.emit('assignedUserName', { userName: socket.userName });
-  socket.emit('news', { hello: "worldsss" });
+  socket.emit('connected');
   io.sockets.emit('updateUsersOnline', { userOnlineCount: socketHelper.getUserOnlineCount() });
 
   //ROUTES

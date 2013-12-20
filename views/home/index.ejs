@@ -46,21 +46,41 @@
     
         <div class="chat-window-wrapper">
             <div class="chat-window" id="chat-window">
-            <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">&bull; CHAT LEAP &bull;</h1>
-            <!--<div style="text-align:center">
-                <button ng-click="joinGlobal()"  class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
-                <button class="btn btn-default" style="margin: 0 auto;">Join Random Chat</button>
-            </div>-->
+              <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">&bull; CHAT LEAP &bull;</h1>
+              <!--<div style="text-align:center">
+                  <button ng-click="joinGlobal()"  class="btn btn-default" style="margin: 0 auto;">Join Global Chat</button>
+                  <button class="btn btn-default" style="margin: 0 auto;">Join Random Chat</button>
+              </div>-->
               <div ng-repeat="message in currentRoom.messages" ng-model="allMessages">
                 <div ng-switch on="message.otherUser">
                     <div ng-switch-when="true">
                         <div class="chat-bubble">
-                          <span>{{message.userName}}: {{message.text}}</span>
+                          <span>{{message.userName}}:</span>
+                          <span ng-repeat="messagePeice in message.text" ng-model="allMessages">
+                            <span ng-switch on="messagePeice.type">
+                              <span ng-switch-when="text">
+                                {{messagePeice.value}}
+                              </span>
+                              <span ng-switch-when="link">
+                                <a href="http://{{messagePeice.value}}">{{messagePeice.value}}</a>
+                              </span>
+                            </span>
+                          </span>
                         </div>
                     </div>
                     <div style="text-align: right;" ng-switch-default>
                         <div class="chat-bubble" style="border-color:#4EE3D2;">
-                          <span>{{message.userName}}: {{message.text}}</span>
+                          <span>{{message.userName}}:</span>
+                          <span ng-repeat="messagePeice in message.text" ng-model="allMessages">
+                            <span ng-switch on="messagePeice.type">
+                              <span ng-switch-when="text">
+                                {{messagePeice.value}}
+                              </span>
+                              <span ng-switch-when="link">
+                                <a href="http://{{messagePeice.value}}">{{messagePeice.value}}</a>
+                              </span>
+                            </span>
+                          </span>
                         </div>
                     </div>
                 </div>                

@@ -11,6 +11,32 @@ function Room(name,messages,users) {
         this.users = pick(users,{});
     }
 
+function MessagePeice(type,value) {
+        this.type=type;
+        this.value=value;
+    }
+
+function linkify(inputText) {
+    var messagePeices = [];
+    var websitePattern = /[^\s\"&<>]+\.[^\s\"&<>]+(\b|$)/gim;
+    var matches = inputText.match(websitePattern);
+    if(!matches){
+        messagePeices.push(new MessagePeice("text",inputText));
+    }else{
+        var last = 0;
+        for(var i = 0;i<matches.length;i++){
+            var start = inputText.indexOf(matches[i]);
+            var end = start+matches[i].length;
+            messagePeices.push(new MessagePeice("text",inputText.substring(last,start)));
+            messagePeices.push(new MessagePeice("link",inputText.substring(start,end)));
+            last=end;
+        }
+        messagePeices.push(new MessagePeice("text",inputText.substring(last)));
+    }
+    
+    console.log(matches);
+    return messagePeices;
+}
 //start in global room
 
 
@@ -35,11 +61,11 @@ function MessageCtrl($scope) {
     $scope.addMessage = function(message) {
         if(message){
             n = new Notification( "New Messages");
-            $scope.rooms[message.room].messages.push({text:message.text, userName:message.userName, otherUser:true});
+            $scope.rooms[message.room].messages.push({text:linkify(message.text), userName:message.userName, otherUser:true});
         }else{
             if($scope.messageText!=""){
                 socket.emit('message', { room: $scope.currentRoom.name, text: $scope.messageText});
-                $scope.currentRoom.messages.push({text:$scope.messageText, userName:$scope.session.userName, otherUser:false});
+                $scope.currentRoom.messages.push({text:linkify($scope.messageText), userName:$scope.session.userName, otherUser:false});
                 $scope.messageText = '';
             }
         }
@@ -52,6 +78,7 @@ function MessageCtrl($scope) {
 
     //JQUERY
     $('#guestAlias').typing({
+        //TODO: make this work on mobile
         stop: function (event, $elem) {
             $scope.session.userName = $elem.val();
             socket.emit('changeName', { userName: $scope.session.userName });
@@ -60,15 +87,25 @@ function MessageCtrl($scope) {
     });
 
     //SOCKET HANDLER
-    socket.on('message', function (data) {
-        $scope.addMessage(data);
-        $scope.$apply();
+    socket.on('connected', function () {
+        for(var room in $scope.rooms){
+            socket.emit('joinRoom', { room: room });
+        }
+        socket.emit('changeName', { userName: $scope.session.userName });
     });
 
     socket.on('assignedUserName', function (data) {
-        $scope.session.userName = data.userName;
-        //maybe dont need guestAlias???
-        $scope.guestAlias = $scope.session.userName;
+        //dont get new name if d/c occurs
+        if(!$scope.session.userName){
+            $scope.session.userName = data.userName;
+            //maybe dont need guestAlias???
+            $scope.guestAlias = $scope.session.userName;
+            $scope.$apply();
+        }
+    });
+
+    socket.on('message', function (data) {
+        $scope.addMessage(data);
         $scope.$apply();
     });
 
@@ -78,18 +115,19 @@ function MessageCtrl($scope) {
     });
 
     socket.on('connectedToRoom', function (data) {
-        $scope.currentRoom = new Room(data.name,data.messages,data.users);
-        $scope.rooms[$scope.currentRoom.name] = $scope.currentRoom;
+        //CHECK IF ROOM EXISTS
+        if(!$scope.rooms[data.name]){
+            $scope.rooms[data.name] = new Room(data.name,data.messages,data.users);
+        }else{
+            $scope.rooms[data.name] = new Room(data.name,$scope.rooms[data.name].messages,data.users);
+        }
+        $scope.currentRoom = $scope.rooms[data.name];
         $scope.$apply();
     });
 
     socket.on('changeName', function (data) {
         $scope.rooms[data.roomName].users[data.userID] = data.userName;
         $scope.$apply();
-    });
-
-    socket.on('news', function (data) {
-        console.log(data);
     });
 
     socket.on('userJoinedRoom', function (data) {

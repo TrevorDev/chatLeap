@@ -36,8 +36,6 @@ function linkify(inputText) {
         }
         messagePeices.push(new MessagePeice("text",inputText.substring(last)));
     }
-    
-    console.log(matches);
     return messagePeices;
 }
 //start in global room

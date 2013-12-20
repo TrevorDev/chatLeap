@@ -17,6 +17,9 @@ function MessagePeice(type,value) {
     }
 
 function linkify(inputText) {
+    if(!inputText){
+        return [];
+    }
     var messagePeices = [];
     var websitePattern = /[^\s\"&<>]+\.[^\s\"&<>]+(\b|$)/gim;
     var matches = inputText.match(websitePattern);

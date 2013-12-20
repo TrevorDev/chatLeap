@@ -21,7 +21,7 @@ function linkify(inputText) {
         return [];
     }
     var messagePeices = [];
-    var websitePattern = /[^\s\"&<>]+\.[^\s\"&<>]+(\b|$)/gim;
+    var websitePattern = /[^\s\"<>]+\.[^\s\"<>]+(\b|$)/gim;
     var matches = inputText.match(websitePattern);
     if(!matches){
         messagePeices.push(new MessagePeice("text",inputText));
@@ -58,7 +58,9 @@ function MessageCtrl($scope) {
 
     $scope.changeRoom = function(roomName) {
         $scope.currentRoom = $scope.rooms[roomName];
-        $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
+        setTimeout(function(){
+            $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
+        }, 0);
     }
 
     $scope.addMessage = function(message) {

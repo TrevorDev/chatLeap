@@ -10,8 +10,30 @@ function MessageCtrl($scope) {
     $scope.rooms = {};
     $scope.currentRoom = {};
 
+    $scope.joinRoom = function(roomName) {
+        if(roomName){
+
+        }else{
+           socket.emit('joinRoom', { room: $scope.roomToJoin }); 
+        }
+    }
+
+    $scope.closeRoom = function(roomName) {
+        socket.emit('leaveRoom', { roomName: roomName });
+        if($scope.currentRoom.name==roomName){
+            for (var key in $scope.rooms){
+                if(key!=roomName){
+                    $scope.currentRoom=$scope.rooms[key];
+                    break;
+                }
+            }
+        }
+        delete $scope.rooms[roomName];
+    }
+
     $scope.changeRoom = function(roomName) {
         $scope.currentRoom = $scope.rooms[roomName];
+        window.history.pushState("roomName", "Chat Leap", "/openRoom/"+roomName.replace(" ","_"));
         setTimeout(function(){
             $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
         }, 0);
@@ -51,6 +73,10 @@ function MessageCtrl($scope) {
             socket.emit('joinRoom', { room: room });
         }
         socket.emit('changeName', { userName: $scope.session.userName });
+        var urlRoomMatch = window.location.pathname.match(/openRoom\/(.*)/)
+        if(urlRoomMatch){
+            socket.emit('joinRoom', { room: urlRoomMatch[1].replace("_"," ") });
+        }
     });
 
     socket.on('assignedUserName', function (data) {
@@ -80,7 +106,7 @@ function MessageCtrl($scope) {
         }else{
             $scope.rooms[data.name] = new Room(data.name,$scope.rooms[data.name].messages,data.users);
         }
-        $scope.currentRoom = $scope.rooms[data.name];
+        $scope.changeRoom(data.name);
         $scope.$apply();
     });
 

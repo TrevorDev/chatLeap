@@ -17,7 +17,7 @@
         </div>
         <div class="navbar-collapse collapse" style="height: 1px;">
           <ul class="nav navbar-nav">
-            <li><a href="#about">{{userOnlineCount}} Users Online</a></li>
+            <li><a href="">{{userOnlineCount}} Users Online</a></li>
             <!--<li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Explore <b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -27,9 +27,16 @@
               </ul>
             </li>-->
             <li  ng-class="(room.name==currentRoom.name) ? 'active' : ''" ng-repeat="room in rooms" ng-model="allRooms">
-              <a ng-click="changeRoom(room.name)" href="#">{{room.name}}</a>
+              <a ng-click="changeRoom(room.name)" style="display: inline-block;" href="">{{room.name}}</a><a style="padding-left: 0px;display: inline-block;" ng-click="closeRoom(room.name)" href=""><span class="glyphicon glyphicon-remove"></span></a>
             </li>
           </ul>
+          <form class="navbar-form navbar-right" ng-submit="joinRoom()">
+                      <div class="form-group" style="padding-right:10px">
+                        <input class="form-control" ng-model="roomToJoin" placeholder="Room name" id="inputIcon" name="roomName" type="text">
+                      </div>
+
+                  <button type="submit" class="btn">Join/Create Room</button>
+          </form>
           <!--<form class="navbar-form navbar-right" method="post" action="/login">
                       <div class="form-group">
                         <input class="form-control" placeholder="Email" id="inputIcon" name="email" type="text">

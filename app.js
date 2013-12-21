@@ -72,6 +72,11 @@ io.sockets.on('connection', function (socket) {
     }
   });
 
+  socket.on('leaveRoom', function (data) {
+    var roomName = data.roomName;
+    socket.broadcast.to(roomName).emit('userLeftRoom', { userID: socket.id, roomName:roomName });
+  });
+
   socket.on('disconnect', function () {
     var rooms = io.sockets.manager.roomClients[socket.id];
     for(var key in rooms){

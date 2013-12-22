@@ -31,13 +31,18 @@ function MessageCtrl($scope) {
         }
         delete $scope.rooms[roomName];
     }
-
+    $scope.scrollToChatBottom = function(){
+        //IS THERE A BETTER WAY TO GET THIS TO HAPPEN AFTER ANGULAR UPDATES?????
+        setTimeout(function(){
+            if($("#chat-window")[0]){
+                $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
+            }
+        }, 0);
+    }
     $scope.changeRoom = function(roomName) {
         $scope.currentRoom = $scope.rooms[roomName];
         window.history.pushState("roomName", "Chat Leap", "/openRoom/"+roomName.replace(" ","_"));
-        setTimeout(function(){
-            $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
-        }, 0);
+        $scope.scrollToChatBottom();
     }
 
     $scope.addMessage = function(message) {
@@ -45,16 +50,15 @@ function MessageCtrl($scope) {
             n = new Notification( "New Messages");
             $scope.rooms[message.room].messages.push({text:linkify(message.text), userName:message.userName, otherUser:true});
         }else{
+            console.log('hit');
             if($scope.messageText!=""){
+                console.log('hit');
                 socket.emit('message', { room: $scope.currentRoom.name, text: $scope.messageText});
                 $scope.currentRoom.messages.push({text:linkify($scope.messageText), userName:$scope.session.userName, otherUser:false});
                 $scope.messageText = '';
             }
         }
-        //IS THERE A BETTER WAY TO GET THIS TO HAPPEN AFTER ANGULAR UPDATES?????
-        setTimeout(function(){
-            $("#chat-window").scrollTop($("#chat-window")[0].scrollHeight);
-        }, 0);
+        $scope.scrollToChatBottom();
     };
 
 

@@ -58,6 +58,10 @@ html, body, .message-app-wrapper{
 
 /* Custom page CSS */
 
+.hidden{
+                    display:none;
+}
+
 .chat-bubble {
     display: inline-block;margin:
     4px;padding:10px;

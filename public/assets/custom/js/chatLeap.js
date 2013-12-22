@@ -5,11 +5,21 @@ function MessageCtrl($scope) {
 
     $scope.session = {};
     $scope.session.userName = "";
+
     $scope.nonChatWebpage = "";
 
     $scope.userOnlineCount = 1;
     $scope.rooms = {};
     $scope.currentRoom = {};
+
+    $scope.showInnerPage = function(pageLink) {
+        $.get( pageLink, function( data ) {
+            //COMPILE DATA WITH ANGULAR << ITS DUMB http://stackoverflow.com/questions/19267979/ng-click-not-working-from-dynamically-generated-html
+            $('#innerPage').html(data);
+            $scope.nonChatWebpage = pageLink;
+            $scope.$apply();
+        });
+    }
 
     $scope.joinRoom = function(roomName) {
         if(roomName){
@@ -43,6 +53,7 @@ function MessageCtrl($scope) {
         $scope.currentRoom = $scope.rooms[roomName];
         window.history.pushState("roomName", "Chat Leap", "/openRoom/"+roomName.replace(/\s/g,"_"));
         $scope.scrollToChatBottom();
+        $scope.nonChatWebpage="";
     }
 
     $scope.addMessage = function(message) {

@@ -5,6 +5,7 @@ function MessageCtrl($scope) {
 
     $scope.session = {};
     $scope.session.userName = "";
+    $scope.nonChatWebpage = "";
 
     $scope.userOnlineCount = 1;
     $scope.rooms = {};

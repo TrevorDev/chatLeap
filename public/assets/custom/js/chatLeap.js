@@ -41,7 +41,7 @@ function MessageCtrl($scope) {
     }
     $scope.changeRoom = function(roomName) {
         $scope.currentRoom = $scope.rooms[roomName];
-        window.history.pushState("roomName", "Chat Leap", "/openRoom/"+roomName.replace(" ","_"));
+        window.history.pushState("roomName", "Chat Leap", "/openRoom/"+roomName.replace(/\s/g,"_"));
         $scope.scrollToChatBottom();
     }
 
@@ -80,7 +80,7 @@ function MessageCtrl($scope) {
         socket.emit('changeName', { userName: $scope.session.userName });
         var urlRoomMatch = window.location.pathname.match(/openRoom\/(.*)/)
         if(urlRoomMatch){
-            socket.emit('joinRoom', { room: urlRoomMatch[1].replace("_"," ") });
+            socket.emit('joinRoom', { room: urlRoomMatch[1].replace(/_/g," ") });
         }
     });
 

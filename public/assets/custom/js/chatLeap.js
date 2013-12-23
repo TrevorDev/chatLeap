@@ -40,9 +40,10 @@ function MessageCtrl($scope) {
     $scope.currentRoom = {};
 
     $scope.showInnerPage = function(pageLink) {
-        $.get( pageLink, function( data ) {
+        $.get( '/innerPages/'+pageLink, function( data ) {
             $scope.innerPage = data;
             $scope.nonChatWebpage = pageLink;
+            window.location.replace('#page/'+pageLink);
             $scope.$apply();
         });
     }
@@ -68,7 +69,7 @@ function MessageCtrl($scope) {
         delete $scope.rooms[roomName];
         if(Object.keys($scope.rooms).length <= 0){
             
-            $scope.showInnerPage('/innerPages/popularChatRooms');
+            $scope.showInnerPage('popularChatRooms');
         }
     }
     $scope.scrollToChatBottom = function(){
@@ -81,7 +82,7 @@ function MessageCtrl($scope) {
     }
     $scope.changeRoom = function(roomName) {
         $scope.currentRoom = $scope.rooms[roomName];
-        window.history.pushState("roomName", "Chat Leap", "/openRoom/"+roomName.replace(/\s/g,"_"));
+        window.location.replace('#openRoom/'+roomName.replace(/\s/g,"_"));
         $scope.scrollToChatBottom();
         $scope.nonChatWebpage="";
     }
@@ -113,13 +114,20 @@ function MessageCtrl($scope) {
 
     //SOCKET HANDLER
     socket.on('connected', function () {
+        //FIX DROPPED CONNECTION
         for(var room in $scope.rooms){
             socket.emit('joinRoom', { room: room });
         }
         socket.emit('changeName', { userName: $scope.session.userName });
-        var urlRoomMatch = window.location.pathname.match(/openRoom\/(.*)/)
+
+
+        var urlRoomMatch = window.location.hash.match(/openRoom\/(.*)/);
+        console.log(window.location);
+        var urlPageMatch = window.location.hash.match(/page\/(.*)/);
         if(urlRoomMatch){
             socket.emit('joinRoom', { room: urlRoomMatch[1].replace(/_/g," ") });
+        }else if(urlPageMatch){
+            $scope.showInnerPage(urlPageMatch[1]);
         }
     });
 

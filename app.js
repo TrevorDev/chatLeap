@@ -38,8 +38,7 @@ server.listen(3001);
 io.sockets.on('connection', function (socket) {
   //INITIALIZE CONNECTION
   socketHelper.init(socket);
-  socket.emit('assignedUserName', { userName: socket.userName });
-  socket.emit('connected');
+  socket.emit('connected',{ userName: socket.userName });
   io.sockets.emit('updateUsersOnline', { userOnlineCount: socketHelper.getUserOnlineCount() });
 
   //ROUTES

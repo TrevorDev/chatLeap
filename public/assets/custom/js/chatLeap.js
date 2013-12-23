@@ -31,6 +31,7 @@ function MessageCtrl($scope) {
 
     $scope.session = {};
     $scope.session.userName = "";
+    $scope.alreadyConnected = false;
 
     $scope.nonChatWebpage = "";
     $scope.innerPage = "";
@@ -113,32 +114,33 @@ function MessageCtrl($scope) {
     });
 
     //SOCKET HANDLER
-    socket.on('connected', function () {
+    socket.on('connected', function (data) {
         //FIX DROPPED CONNECTION
-        for(var room in $scope.rooms){
-            socket.emit('joinRoom', { room: room });
-        }
-        socket.emit('changeName', { userName: $scope.session.userName });
+        if($scope.alreadyConnected){
+            for(var room in $scope.rooms){
+                socket.emit('joinRoom', { room: room });
+            }
+            socket.emit('changeName', { userName: $scope.session.userName });
+        }else {
+            if(getCookie('userName')){
+                $scope.session.userName = getCookie('userName');
+                socket.emit('changeName', { userName: getCookie('userName') });
+            }else{
+                $scope.session.userName = data.userName;
+            }
 
-
-        var urlRoomMatch = window.location.hash.match(/openRoom\/(.*)/);
-        console.log(window.location);
-        var urlPageMatch = window.location.hash.match(/page\/(.*)/);
-        if(urlRoomMatch){
-            socket.emit('joinRoom', { room: urlRoomMatch[1].replace(/_/g," ") });
-        }else if(urlPageMatch){
-            $scope.showInnerPage(urlPageMatch[1]);
+            //INSPECT INCOMMING LINK
+            var urlRoomMatch = window.location.hash.match(/openRoom\/(.*)/);
+            var urlPageMatch = window.location.hash.match(/page\/(.*)/);
+            if(urlRoomMatch){
+                socket.emit('joinRoom', { room: urlRoomMatch[1].replace(/_/g," ") });
+            }else if(urlPageMatch){
+                $scope.showInnerPage(urlPageMatch[1]);
+            }
         }
-    });
-
-    socket.on('assignedUserName', function (data) {
-        //dont get new name if d/c occurs
-        if(!$scope.session.userName){
-            $scope.session.userName = data.userName;
-            //maybe dont need guestAlias???
-            $scope.guestAlias = $scope.session.userName;
-            $scope.$apply();
-        }
+        console.log($scope.session.userName);
+        $scope.$apply();
+        $scope.alreadyConnected = true;
     });
 
     socket.on('message', function (data) {
@@ -164,6 +166,7 @@ function MessageCtrl($scope) {
 
     socket.on('changeName', function (data) {
         $scope.rooms[data.roomName].users[data.userID] = data.userName;
+        setCookie('userName',data.userName,(3600 * 1000 * 24 * 365 * 10));
         $scope.$apply();
     });
 
@@ -181,3 +184,29 @@ function MessageCtrl($scope) {
     socket.emit('joinRoom', { room: "ChatRoom 2" });
     socket.emit('joinRoom', { room: "ChatRoom 1" });
 }
+
+
+
+function setCookie(c_name,value,exdays)
+    {
+      var exdate=new Date();
+      exdate.setDate(exdate.getDate() + exdays);
+      var c_value=escape(value) + 
+        ((exdays==null) ? "" : ("; expires="+exdate.toUTCString()));
+      document.cookie=c_name + "=" + c_value;
+    }
+
+    function getCookie(c_name)
+    {
+     var i,x,y,ARRcookies=document.cookie.split(";");
+     for (i=0;i<ARRcookies.length;i++)
+     {
+      x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+      y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+      x=x.replace(/^\s+|\s+$/g,"");
+      if (x==c_name)
+      {
+       return unescape(y);
+      }
+     }
+    }

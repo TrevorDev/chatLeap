@@ -1,3 +1,29 @@
+angular.module('chatLeap', [], function($compileProvider) {
+  // configure new 'compile' directive by passing a directive
+  // factory function. The factory function injects the '$compile'
+  $compileProvider.directive('compile', function($compile) {
+    // directive factory creates a link function
+    return function(scope, element, attrs) {
+      scope.$watch(
+        function(scope) {
+           // watch the 'compile' expression for changes
+          return scope.$eval(attrs.compile);
+        },
+        function(value) {
+          // when the 'compile' expression changes
+          // assign it into the current DOM
+          element.html(value);
+          // compile the new DOM and link it to the current
+          // scope.
+          // NOTE: we only compile .childNodes so that
+          // we don't get into infinite loop compiling ourselves
+          $compile(element.contents())(scope);
+        }
+      );
+    };
+  })
+});
+
 var socket = io.connect(SOCKET_IO_ADDRESS);
 
 //CONTROLLER
@@ -7,6 +33,7 @@ function MessageCtrl($scope) {
     $scope.session.userName = "";
 
     $scope.nonChatWebpage = "";
+    $scope.innerPage = "";
 
     $scope.userOnlineCount = 1;
     $scope.rooms = {};
@@ -14,8 +41,7 @@ function MessageCtrl($scope) {
 
     $scope.showInnerPage = function(pageLink) {
         $.get( pageLink, function( data ) {
-            //COMPILE DATA WITH ANGULAR << ITS DUMB http://stackoverflow.com/questions/19267979/ng-click-not-working-from-dynamically-generated-html
-            $('#innerPage').html(data);
+            $scope.innerPage = data;
             $scope.nonChatWebpage = pageLink;
             $scope.$apply();
         });
@@ -23,7 +49,7 @@ function MessageCtrl($scope) {
 
     $scope.joinRoom = function(roomName) {
         if(roomName){
-
+            socket.emit('joinRoom', { room: roomName.replace(/_/g," ") }); 
         }else{
            socket.emit('joinRoom', { room: $scope.roomToJoin }); 
         }
@@ -40,6 +66,10 @@ function MessageCtrl($scope) {
             }
         }
         delete $scope.rooms[roomName];
+        if(Object.keys($scope.rooms).length <= 0){
+            
+            $scope.showInnerPage('/innerPages/popularChatRooms');
+        }
     }
     $scope.scrollToChatBottom = function(){
         //IS THERE A BETTER WAY TO GET THIS TO HAPPEN AFTER ANGULAR UPDATES?????
@@ -61,9 +91,7 @@ function MessageCtrl($scope) {
             n = new Notification( "New Messages");
             $scope.rooms[message.room].messages.push({text:linkify(message.text), userName:message.userName, otherUser:true});
         }else{
-            console.log('hit');
             if($scope.messageText!=""){
-                console.log('hit');
                 socket.emit('message', { room: $scope.currentRoom.name, text: $scope.messageText});
                 $scope.currentRoom.messages.push({text:linkify($scope.messageText), userName:$scope.session.userName, otherUser:false});
                 $scope.messageText = '';

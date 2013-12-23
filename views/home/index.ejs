@@ -50,9 +50,7 @@
           </form>-->
         </div><!--/.nav-collapse -->
     </div>
-    <!-- MAYBE USE NG_SANATIZE NG-BIND HERE????? -->
-    <div id="innerPage" style="padding-top:50px;" ng-class="nonChatWebpage?'':'hidden'">
-
+    <div id="innerPage" compile="innerPage" style="padding-top:50px;" ng-class="nonChatWebpage?'':'hidden'">
     </div>
     <div ng-class="nonChatWebpage?'hidden':''">
         <div class="chat-window-wrapper">

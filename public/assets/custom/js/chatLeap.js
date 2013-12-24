@@ -145,6 +145,7 @@ function MessageCtrl($scope) {
     });
 
     socket.on('message', function (data) {
+        document.getElementById('audiotag1').play();
         $scope.addMessage(data);
         $scope.$apply();
     });
@@ -181,7 +182,6 @@ function MessageCtrl($scope) {
     });
 
     //CTRL MAIN
-    socket.emit('joinRoom', { room: "ChatRoom 2" });
     socket.emit('joinRoom', { room: "ChatRoom 1" });
 }
 

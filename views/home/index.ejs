@@ -3,6 +3,7 @@
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:4em">&bull; CHAT LEAP &bull;</h1>
         <h1 style="margin-top:0px;text-align:center;font-weight:900;color:#8BD9E8;font-size:2em">Please enable javascript to start chatting.</h1>
     </noscript>
+<audio id="audiotag1" src="/public/assets/custom/sound/missedMsg.wav" preload="auto"></audio>
 <div class="message-app-wrapper noscript-hide" ng-controller="MessageCtrl">
     <div class="navbar navbar-default navbar-static-top" role="navigation" style="position: fixed;top: 0px;left: 0px;width: 100%;">
         <div class="navbar-header">
@@ -12,7 +13,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Chat Leap</a>
+          <a class="navbar-brand" ng-click="showInnerPage('popularChatRooms')" href="#">Chat Leap</a>
         </div>
         <div class="navbar-collapse collapse" style="height: 1px;">
           <ul class="nav navbar-nav">

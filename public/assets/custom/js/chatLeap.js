@@ -109,7 +109,7 @@ function MessageCtrl($scope) {
         stop: function (event, $elem) {
             $scope.session.userName = $elem.val();
             socket.emit('changeName', { userName: $scope.session.userName });
-            setCookie('userName',$scope.session.userName,(3600 * 1000 * 24 * 365 * 10));
+            setCookie('userName',$scope.session.userName,(365*10));
         },
         delay: 400
     });

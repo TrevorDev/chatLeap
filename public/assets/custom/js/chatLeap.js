@@ -58,6 +58,7 @@ function MessageCtrl($scope) {
     }
 
     $scope.closeRoom = function(roomName) {
+        console.log(roomName);
         socket.emit('leaveRoom', { roomName: roomName });
         if($scope.currentRoom.name==roomName){
             for (var key in $scope.rooms){
@@ -139,7 +140,6 @@ function MessageCtrl($scope) {
                 $scope.showInnerPage(urlPageMatch[1]);
             }
         }
-        console.log($scope.session.userName);
         $scope.$apply();
         $scope.alreadyConnected = true;
     });

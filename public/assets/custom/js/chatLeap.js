@@ -145,7 +145,7 @@ function MessageCtrl($scope) {
     });
 
     socket.on('message', function (data) {
-        document.getElementById('audiotag1').play();
+        //document.getElementById('audiotag1').play();
         $scope.addMessage(data);
         $scope.$apply();
     });

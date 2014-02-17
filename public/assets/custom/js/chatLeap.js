@@ -90,14 +90,17 @@ function MessageCtrl($scope) {
     }
 
     $scope.addMessage = function(message) {
+        var maxMessages = 40;
         if(message){
             n = new Notification( "New Messages");
             $scope.rooms[message.room].messages.push({text:linkify(message.text), userName:message.userName, otherUser:true});
+            $scope.rooms[message.room].messages = $scope.rooms[message.room].messages.slice(Math.max($scope.rooms[message.room].messages.length - maxMessages, 0))
         }else{
             if($scope.messageText!=""){
                 socket.emit('message', { room: $scope.currentRoom.name, text: $scope.messageText});
                 $scope.currentRoom.messages.push({text:linkify($scope.messageText), userName:$scope.session.userName, otherUser:false});
                 $scope.messageText = '';
+                $scope.currentRoom.messages = $scope.currentRoom.messages.slice(Math.max($scope.currentRoom.messages.length - maxMessages, 0))
             }
         }
         $scope.scrollToChatBottom();

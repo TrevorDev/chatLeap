@@ -35,6 +35,16 @@ routes.init(app);
 
 server.listen(3001);
 
+var users = {};
+var banned = {};
+
+var resetUserSpam = function(){
+  users = {};
+  setTimeout(resetUserSpam,5000);
+}
+resetUserSpam();
+
+
 io.sockets.on('connection', function (socket) {
   //INITIALIZE CONNECTION
   socketHelper.init(socket);
@@ -44,7 +54,16 @@ io.sockets.on('connection', function (socket) {
   //ROUTES
   socket.on('message', function (data) {
   	data.userName=socket.userName;
-    socket.broadcast.to(data.room).emit('message', data);
+    if(users[socket.handshake.address]){
+      users[socket.handshake.address]++;
+    }else{
+      users[socket.handshake.address]=1;
+    }
+    if(users[socket.handshake.address] < 10 && !banned[socket.handshake.address]){
+      socket.broadcast.to(data.room).emit('message', data);
+    }else{
+      banned[socket.handshake.address] = 1;
+    }
   });
 
   socket.on('joinRoom', function (data) {

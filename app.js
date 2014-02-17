@@ -54,15 +54,15 @@ io.sockets.on('connection', function (socket) {
   //ROUTES
   socket.on('message', function (data) {
   	data.userName=socket.userName;
-    if(users[socket.handshake.address]){
-      users[socket.handshake.address]++;
+    if(users[socket.handshake.address.address]){
+      users[socket.handshake.address.address]++;
     }else{
-      users[socket.handshake.address]=1;
+      users[socket.handshake.address.address]=1;
     }
-    if(users[socket.handshake.address] < 10 && !banned[socket.handshake.address]){
+    if(users[socket.handshake.address.address] < 10 && !banned[socket.handshake.address.address]){
       socket.broadcast.to(data.room).emit('message', data);
     }else{
-      banned[socket.handshake.address] = 1;
+      banned[socket.handshake.address.address] = 1;
     }
   });
 
